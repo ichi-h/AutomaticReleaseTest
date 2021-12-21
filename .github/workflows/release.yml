@@ -11,12 +11,19 @@ jobs:
     runs-on: "windows-latest"
 
     steps:
+      strategy:
+        matrix:
+          os: [windows-latest, macos-latest]
+
       - uses: actions/checkout@v2
 
-      - name: "Build"
+      - name: "Build on ${{ matrix.os }}"
         run: cargo build --release --verbose
-
-      - uses: "marvinpinto/action-automatic-releases@latest"
+      
+      - name: "Release on Windows"
+        id: release_on_win
+        if: ${{ matrinx.os }} == "windows-latest"
+        uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "latest"
@@ -24,3 +31,15 @@ jobs:
           title: "Development Build"
           files: |
             ./target/release/${{ github.event.repository.name }}.exe
+
+      - name: "Release on Mac"
+        id: release_on_mac
+        if: ${{ matrinx.os }} == "macos-latest"
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: false
+          title: "Development Build"
+          files: |
+            ./target/release/${{ github.event.repository.name }}
