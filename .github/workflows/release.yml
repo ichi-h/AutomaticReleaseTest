@@ -22,7 +22,7 @@ jobs:
       
       - name: "Release on Windows"
         id: release_on_win
-        if: ${{ matrinx.os }} == "windows-latest"
+        if: ${{ matrix.os }} == "windows-latest"
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
@@ -34,7 +34,7 @@ jobs:
 
       - name: "Release on Mac"
         id: release_on_mac
-        if: ${{ matrinx.os }} == "macos-latest"
+        if: ${{ matrix.os }} == "macos-latest"
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
