@@ -8,13 +8,13 @@ on:
 jobs:
   Release:
     name: "Release"
-    runs-on: "windows-latest"
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest]
 
     steps:
-      strategy:
-        matrix:
-          os: [windows-latest, macos-latest]
-
       - uses: actions/checkout@v2
 
       - name: "Build on ${{ matrix.os }}"
